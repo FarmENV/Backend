@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure--u+b^^t)p5b(pj*m#c87k8su^tifc4&it^_nor1z3-pj@py5)v
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOCAL = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -89,12 +90,23 @@ WSGI_APPLICATION = 'farmENV.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if LOCAL:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    import dj_database_url
+    from decouple import config
+
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL')
+        ) 
+    }
+
 
 
 # Password validation
