@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.translation import activate
 
 #Django REST framework
 from rest_framework import serializers
@@ -18,6 +19,8 @@ from users.models import Profile
 #Utilities
 import jwt
 from datetime import timedelta
+
+activate('es')
 
 class UserSignupSerializer(serializers.Serializer):
   ''' This handles the sign up data validation and the user creation '''
@@ -49,7 +52,7 @@ class UserSignupSerializer(serializers.Serializer):
     passwd_conf = data['password_confirmation']
 
     if passwd != passwd_conf:
-      raise serializers.ValidationError({'ERROR':'The passwords do not match'})
+      raise serializers.ValidationError({'ERROR':'Las contraseñas no coinciden'})
 
     password_validation.validate_password(passwd)
 
@@ -69,6 +72,7 @@ class UserSignupSerializer(serializers.Serializer):
     )
 
     profile = Profile(user=user)
+    profile.profile_picture="media/def_iii9qf"
     profile.is_verified=False
 
     profile.save()
@@ -82,7 +86,7 @@ class UserSignupSerializer(serializers.Serializer):
 
         verification_token = self.gen_verification_token(user)
         subject = f'¡Bienvenido @{user.username}! Verifica tu cuenta'
-        from_email = 'Application <noreply@app-com>'
+        from_email = 'farmENV <noreply@app-com>'
         content = render_to_string(
             'emails/account_verification.html',
             {'token':verification_token,'user':user}
