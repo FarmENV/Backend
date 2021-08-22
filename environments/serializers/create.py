@@ -10,7 +10,7 @@ class EnvironmentCreationSerializer(serializers.Serializer):
   ''' This handles the creation of an environment '''
 
   username = serializers.CharField(min_length=3, max_length = 150, allow_blank = False)
-  arduino_id = serializers.CharField(max_length=100, allow_blank = False, validators = [UniqueValidator(queryset=Environment.objects.all())])
+  arduino_id = serializers.CharField(max_length=100, allow_blank = False)
   environment_name = serializers.CharField(max_length=100, allow_blank = False)
   environment_type = serializers.IntegerField()
 
@@ -26,3 +26,4 @@ class EnvironmentCreationSerializer(serializers.Serializer):
     environment.save()
 
     return environment
+    
