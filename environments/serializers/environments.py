@@ -14,7 +14,7 @@ class EnvModelSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Environment
-    fields = ['farmer_id', 'arduino_id','environment_name', 'environment_type', 'created_at']
+    fields = ['id','farmer_id', 'arduino_id','environment_name', 'environment_type', 'created_at']
 
 class NewEnvSerializer(serializers.ModelSerializer):
   ''' It returns the new env data '''
@@ -22,3 +22,10 @@ class NewEnvSerializer(serializers.ModelSerializer):
   class Meta:
     model = Environment
     fields = ['arduino_id']
+
+class EnvGetSerializer(serializers.ModelSerializer):
+  ''' It returns the new env data '''
+
+  class Meta:
+    model = Environment
+    fields = ['environment_name']
